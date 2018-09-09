@@ -12,5 +12,16 @@ module.exports = {
                 })
         })
 
+    },
+    getById:(id)=>{
+        return new Promise((resolve,reject)=>{
+            Player.findById(id)
+            .then(data=>{
+                resolve(data)
+            })
+            .catch(err=>{
+                reject(new Error('player '+id+' not found!!!'))
+            })
+        })
     }
 }

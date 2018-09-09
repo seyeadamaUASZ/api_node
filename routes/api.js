@@ -8,6 +8,7 @@ const controllers = require('../controllers')
 router.get('/:resource',(req,res)=>{
    const resource = req.params.resource
    const controller=controllers[resource]
+   const filters = req.query
 
    if (controller==null){
 	   res.json({
@@ -16,7 +17,7 @@ router.get('/:resource',(req,res)=>{
 	   })
 	   return
    }
-   controller.get()
+   controller.get(filters)
    .then(data=>{
       res.json({
 		  confirmation:'success',
@@ -30,6 +31,33 @@ router.get('/:resource',(req,res)=>{
 	   })
    })
 
+})
+
+router.get('/:resource/:id',(req,res)=>{
+	const resource = req.params.resource
+	const id = req.params.id
+	const controller = controllers[resource]
+
+	if(controller == null){
+		res.json({
+			confirmation : 'fail',
+			message: 'invalid resource'
+		})
+		return
+	}
+	controller.getById(id)
+	.then(data=>{
+       res.json({
+		   confirmation : 'success',
+		   data:data
+	   })
+	})
+	.catch(err=>{
+       res.json({
+		   confirmation: 'fail',
+		   message : err.message
+	   })
+	})
 })
 
 module.exports = router
