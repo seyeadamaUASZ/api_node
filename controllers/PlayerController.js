@@ -45,5 +45,16 @@ module.exports = {
                 reject(err)
             })
         })
+    },
+    delete:(id)=>{
+        return new Promise((resolve,reject)=>{
+            Player.findByIdAndRemove(id)
+            .then(()=>{
+                resolve({id:id})
+            })
+            .catch(err=>{
+                reject(err)
+            })
+        })
     }
 }
