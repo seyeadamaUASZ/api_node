@@ -60,4 +60,56 @@ router.get('/:resource/:id',(req,res)=>{
 	})
 })
 
+//post create new record
+router.post('/:resource',(req,res)=>{
+  const resource = req.params.resource
+  const controller = controllers[resource]
+
+  if(controller == null){
+	  res.json({
+		  confirmation:'fail',
+		  message:'Invalid resource'
+	  })
+	  return
+  }
+  controller.post(req.body)
+  .then(data=>{
+	  res.json({
+		  confirmatipn: 'success',
+		  data:data
+	  })
+  })
+  .catch(err=>{
+	  res.json({
+		  confirmation: 'fail',
+		  message: err.message
+	  })
+  })
+})
+
+router.put('/:resource/:id',(req,res)=>{
+	const resource = req.params.resource
+	const controller = controllers[resource]
+	if(controller == null){
+		res.json({
+			confirmation:'fail',
+			message :'invalid resource'
+		})
+		return
+	}
+	controller.put(req.params.id,req.body)
+	.then(data=>{
+        res.json({
+			confirmation:'success',
+			data:data
+		})
+	})
+	.catch(err=>{
+		res.json({
+			confirmation:'fail',
+			message:err.message
+		})
+	})
+})
+
 module.exports = router
